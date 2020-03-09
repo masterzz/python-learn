@@ -1,6 +1,7 @@
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.preprocessing import MinMaxScaler, StandardScaler #, Imputer
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.impute import SimpleImputer
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.decomposition import PCA
 import jieba
@@ -132,6 +133,7 @@ def mm():
     归一化处理
     :return: NOne
     """
+    # 这里是指定了范围，2-3之间
     mm = MinMaxScaler(feature_range=(2, 3))
 
     data = mm.fit_transform([[90,2,10,40],[60,4,15,45],[75,3,13,46]])
@@ -157,11 +159,15 @@ def stand():
 
 def im():
     """
-    缺失值处理
+    缺失值处理，有个替换的函数，要替换成pandas的nan之后才能用dropna
     :return:NOne
     """
     # NaN, nan
-    im = Imputer(missing_values='NaN', strategy='mean', axis=0)
+    # 0是列，1是行
+    # im = Imputer(missing_values='NaN', strategy='mean', axis=0)
+
+    im = SimpleImputer()
+
 
     data = im.fit_transform([[1, 2], [np.nan, 3], [7, 6]])
 
@@ -198,7 +204,7 @@ def pca():
 
 
 if __name__ == "__main__":
-    var()
+    stand()
 
 
 

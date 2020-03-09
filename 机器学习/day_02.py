@@ -11,7 +11,7 @@ from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 
 
-li = load_iris()
+# li = load_iris()
 
 # print("获取特征值")
 # print(li.data)
@@ -20,10 +20,11 @@ li = load_iris()
 # print(li.DESCR)
 
 # 注意返回值, 训练集 train  x_train, y_train        测试集  test   x_test, y_test
-x_train, x_test, y_train, y_test = train_test_split(li.data, li.target, test_size=0.25)
+# x_train, x_test, y_train, y_test = train_test_split(li.data, li.target, test_size=0.25)
 #
-print("训练集特征值和目标值：", x_train, y_train)
-print("测试集特征值和目标值：", x_test, y_test)
+# print("训练集特征值和目标值：", x_train, y_train)
+# print("测试集特征值和目标值：", x_test, y_test)
+# print(len(y_train))
 
 # news = fetch_20newsgroups(subset='all')
 #
@@ -47,7 +48,7 @@ def knncls():
     # 读取数据
     data = pd.read_csv("./data/FBlocation/train.csv")
 
-    # print(data.head(10))
+    print(data.head(10))
 
     # 处理数据
     # 1、缩小数据,查询数据晒讯
@@ -98,10 +99,10 @@ def knncls():
     knn = KNeighborsClassifier()
 
     # # fit， predict,score
-    # knn.fit(x_train, y_train)
-    #
+    knn.fit(x_train, y_train)
+
     # # 得出预测结果
-    # y_predict = knn.predict(x_test)
+    y_predict = knn.predict(x_test)
     #
     # print("预测的目标签到位置为：", y_predict)
     #
@@ -126,6 +127,23 @@ def knncls():
     print("每个超参数每次交叉验证的结果：", gc.cv_results_)
 
     return None
+
+def myknn():
+    print("my knn")
+    li = load_iris()
+    # 注意返回值, 训练集 train  x_train, y_train        测试集  test   x_test, y_test
+    x_train, x_test, y_train, y_test = train_test_split(li.data, li.target, test_size=0.25)
+    print("训练集长度：%s" %len(y_train))
+    std = StandardScaler()
+    # 对测试集和训练集的特征值进行标准化
+    x_train = std.fit_transform(x_train)
+    x_test = std.transform(x_test)
+    # 进行算法流程 # 超参数
+    knn = KNeighborsClassifier()
+    knn.fit(x_train, y_train)
+    y_predict = knn.predict(x_test)
+    print(y_predict)
+    print("预测的准确率:", knn.score(x_test, y_test))
 
 
 def naviebayes():
@@ -225,7 +243,7 @@ def decision():
     return None
 
 
-# if __name__ == "__main__":
-    # decision()
-
+if __name__ == "__main__":
+    # knncls()
+    decision()
 

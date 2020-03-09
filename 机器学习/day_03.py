@@ -2,7 +2,9 @@ from sklearn.datasets import load_boston
 from sklearn.linear_model import LinearRegression, SGDRegressor,  Ridge, LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+# 评价的包都在metrics中
 from sklearn.metrics import mean_squared_error, classification_report
+# joblib即是保存训练模型的库
 from sklearn.externals import joblib
 import pandas as pd
 import numpy as np
@@ -18,10 +20,15 @@ def mylinear():
     # 获取数据
     lb = load_boston()
 
+    print("========data========")
+    print(type(lb.data))
+    print("========target========")
+    print(lb.target)
+
     # 分割数据集到训练集和测试集
     x_train, x_test, y_train, y_test = train_test_split(lb.data, lb.target, test_size=0.25)
 
-    print(y_train, y_test)
+    # print(y_train, y_test)
 
     # 进行标准化处理(?) 目标值处理？
     # 特征值和目标值是都必须进行标准化处理, 实例化两个标准化API
@@ -33,10 +40,11 @@ def mylinear():
     # 目标值
     std_y = StandardScaler()
 
+    # reshape的作用就是将一维转为二维，解决方法报错，但是看api版本，如果没有报错应该就不用处理
     y_train = std_y.fit_transform(y_train.reshape(-1,1))
     y_test = std_y.transform(y_test.reshape(-1,1))
 
-    # 预测房价结果
+    # 预测房价结果，load就可以拿到了
     # model = joblib.load("./tmp/test.pkl")
     #
     # y_predict = std_y.inverse_transform(model.predict(x_test))
@@ -47,26 +55,34 @@ def mylinear():
     # 正规方程求解方式预测结果
     lr = LinearRegression()
 
+    # 注意后续的fit都是用同一个均值和方差。   正规方程使用与数据比较少的
     lr.fit(x_train, y_train)
+    print("coef:")
 
     print(lr.coef_)
 
-    # 保存训练好的模型
-    # joblib.dump(lr, "./tmp/test.pkl")
+    # 保存训练好的模型，保存也很容易，就是dump,dump好像是丢垃圾的意思，把结果当垃圾丢掉！
+    joblib.dump(lr, "E:/test.pkl")
 
     # # 预测测试集的房子价格
     y_lr_predict = std_y.inverse_transform(lr.predict(x_test))
+    # y_lr_predict = lr.predict(x_test)
+
 
     print("正规方程测试集里面每个房子的预测价格：", y_lr_predict)
     #
     print("正规方程的均方误差：", mean_squared_error(std_y.inverse_transform(y_test), y_lr_predict))
+    print("===================")
+
+    print(y_lr_predict[2])
+
     #
-    # # 梯度下降去进行房价预测
-    sgd = SGDRegressor()
+    # # 梯度下降去进行房价预测，梯度下降适用于数据比较多的，几十万、几百万就用梯度下降了
+    # sgd = SGDRegressor()
+    #
+    # sgd.fit(x_train, y_train)
 
-    sgd.fit(x_train, y_train)
-
-    print(sgd.coef_)
+    # print(sgd.coef_)
 
     # # 预测测试集的房子价格
     # y_sgd_predict = std_y.inverse_transform(sgd.predict(x_test))
@@ -105,7 +121,7 @@ def logistic():
 
     print(data)
 
-    # 缺失值进行处理
+    # 缺失值进行处理，这一招好用，感觉有必要把pandas再学一遍
     data = data.replace(to_replace='?', value=np.nan)
 
     data = data.dropna()
@@ -136,4 +152,5 @@ def logistic():
 
 
 if __name__ == "__main__":
-    mylinear()
+    # mylinear()
+    logistic()
