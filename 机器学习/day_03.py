@@ -121,7 +121,7 @@ def logistic():
 
     print(data)
 
-    # 缺失值进行处理，这一招好用，感觉有必要把pandas再学一遍
+    # 缺失值进行处理，这一招好用，感觉有必要把pandas再学一遍，这个是有返回值的
     data = data.replace(to_replace='?', value=np.nan)
 
     data = data.dropna()
