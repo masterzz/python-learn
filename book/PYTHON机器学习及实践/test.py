@@ -11,10 +11,11 @@ result1 = 7.8463 * 10
 
 money = 13805067553.36 /100/ 10**4
 print(money)
-print("==============")
+print("======mod_gprs_mon_out drop========")
 day = 17
 while day <= 29:
-    result = "alter table mod_gprs_day_out add partition(datetime='202002%s');"%day;
+    # result = "alter table mod_gprs_day_out add partition(datetime='202002%s');"%day;
+    result = "alter table mod_gprs_mon_out drop partition(datetime='2020%s');" % day;
     print(result)
     day = day +1
 
@@ -24,7 +25,7 @@ while day <= 29:
     # result = "hadoop fs -cp /NS2/DATA/small_unit/gprs/day_out/202002%s/SS301PD51202002%s.0001 /NS3/user/hive/warehouse/unicom_all_common.db/mod_gprs_day_out/datetime=202002%s;"%(day,day,day)
     # result = "hadoop fs -ls  /NS3/user/hive/warehouse/unicom_all_common.db/mod_gprs_day_out/datetime=202002%s;"%(day)
     # 删除目录与目录下所有文件
-    result = "hadoop fs -rm -r /NS3/user/hive/warehouse/unicom_all_common.db/mod_gprs_mon_out/datetime=2020%s;" %(day)
+    result = "hadoop fs -rm -r /NS3/user/hive/warehouse/unicom_all_common.db/mod_gprs_mon_out/datetime=2020%s;" % (day)
     print(result + '\n')
     day = day +1
 
@@ -83,8 +84,49 @@ print(money)
 # 1月23.28
 22.26 + 23.28
 
+print("=============")
 
-result = (22.26*10**4-204755.8)/204755.8
-print(result)
+# 1月y的情况
+result = 1.651345e+07 * 8.353507e+09 / 1024 ** 4
+print("1月y的情况:%s"%result)
+result1 = 16513447*7130492963.585551 / 1024 ** 4
+print("1月y的预测情况:%s"%result1)
+# 1月x的情况
+result2 = 1.651345e+07 * 5.897760e+09 / 1024**4
+print("1月x的情况:%s" %result2)
+ratio = (result - result1) / result1
+print("1月预测误差百分比：%s"%ratio)
 
-print(24/31)
+
+# 2月y的情况
+result = 1.408627e+07 * 1.142392e+10 / 1024 ** 4
+print("2月y的情况:%s"%result)
+result1 = 14086268*11785850198.835596 / 1024 ** 4
+print("2月y的预测情况:%s"%result1)
+# 2月x的情况
+result2 = 1.408627e+07 * 9.748290e+09 / 1024**4
+print("2月x的情况:%s" %result2)
+
+ratio =  (150993.07757614178-146356.2708326208) /146356.2708326208
+print("2月预测误差百分比：%s"%ratio)
+
+mse = 2.5142609345304486e+19/1.2346813442026936e+19
+print(mse)
+
+ratio = (219034289066 - 219009506916) / 219009506916
+print("2月iq出账实收月指标和日志表差额：%s"%ratio)
+
+ratio = (231450856418-229173438034) / 229173438034
+print("1月iq出账实收月指标和日志表差额：%s"%ratio)
+
+ratio = (227318441232-217442299168)/217442299168
+print("12月iq出账实收月指标和日志表差额：%s"%ratio)
+
+ratio = (229146288983 - 219757786548) / 219757786548
+print("11月iq出账实收月指标和日志表差额：%s"%ratio)
+
+print(10408015*13009776263.98988/1024**4)
+a = 1.651345e+07*8.353507e+09/1024**4
+b= 1.651345e+07*5.897760e+09/1024**4
+print((b-a)/b)
+print(229146288983/10**10)

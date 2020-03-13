@@ -14,10 +14,12 @@ plt.figure(figsize=(20,8),dpi=80)
 #绘图
 plt.plot(x,y)
 
-#设置x轴的刻度
+#设置x轴的刻度 这种写法叫做列表解析
 _xtick_labels = [i/2 for i in range(4,49)]
-plt.xticks(range(25,50))
-plt.yticks(range(min(y),max(y)+1))
+# plt.xticks(range(25,50))
+plt.xticks(_xtick_labels)
+# plt.yticks(range(min(y),max(y)+1))
+plt.yticks(range(0,max(y)+1))
 
 #保存
 # plt.savefig("./t1.png")

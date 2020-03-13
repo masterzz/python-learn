@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
+from matplotlib import pyplot as plt
 
 # 创建特征值列表
 column = ['Sample code number', 'Clump Thickness', 'Uniformity of Cell Size', 'Uniform of Cell Shape',
@@ -52,6 +53,11 @@ meg = pd.merge(data, data1, on=["a"], how='left')
 # meg = pd.merge(meg,data1,on=['a'],how='outer')
 print("=============合并表2=======================")
 print(meg)
+print("==============处理某一行数据=======")
+print(data['a'])
+print("==============处理某一行数据后=======")
+print(4-data['a'])
+
 # 填充指定值，没成功，不好用，还是均值好用
 # im = SimpleImputer(strategy='constant', fill_value=0)
 # im.fit(meg)
@@ -126,3 +132,5 @@ print(data.fillna(0))
 # inplace：False-返回新的数据集（默认），True-在愿数据集上操作
 
 
+month = '202002'
+print(month[0:6])
