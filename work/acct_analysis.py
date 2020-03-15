@@ -91,6 +91,7 @@ def plotAcctMon():
     plt.xlabel("月份")
     plt.ylabel("出账应收（亿元）")
     plt.title("2019年2月到2020年2月各月出账应收")
+    plt.savefig("./acct_mon.png")
     plt.show()
 
 
@@ -119,15 +120,51 @@ def getIqModelData():
     mon_len = len(tmp)
     result = ''
     i = 0
+    # print("删除临时表")
+    # while i < mon_len - 1:
+    #     mon_1 = tmp[i].replace('-', '')
+    #     mon_2 = tmp[i + 1].replace('-', '')
+    #     result = "drop table zhubr_tmp_$1$" \
+    #         .replace("$2$", mon_2[0:6]).replace("$1$", mon_1[0:6])
+    #     print(result)
+    #     i = i + 1
+
+
+    print("IQ数据提取阶段1——取指标数")
     while i < mon_len - 1:
         mon_1 = tmp[i].replace('-', '')
         mon_2 = tmp[i + 1].replace('-', '')
-        result = "select a.user_id, b.OTH_FEE2 , b.RENT_FEE2, b.INCRE_FEE2 , b.SMS_FEE2 , b.VO_FEE2, b.CUR_INCOME2, c.MON_CATEGORY_FEE001, c.MON_CATEGORY_FEE031, d.CUR_INCOME , f.PRODUCT_RENT P1, g.PRODUCT_RENT P2, h.MON_CATEGORY_FEE031 MON_CATEGORY_FEE0311 , b.OVER_PRODUCT_FEE_01, b.OVER_PRODUCT_FEE_02, b.OVER_PRODUCT_FEE , d.MEALOUT_QT_FEE , d.MEALOUT_CALL_FEE , d.MEALOUT_SMS_FEE, d.DATA_PLANOUT_INCOME, d.PROM_FEE PROM_FEE1, j.EPARCHY_CODE , g.AGE, j.JOIN_MONTH , t.LEV_2, substr(g.PSPT_ID,1,6) PSPT_CITY, k.ADD_DURATION , k.ADD_CALL_TIMES , l.ADD_STREAM into zhubr_tmp_$2$ from dc_cust_data.DWU_AI_USER_INFO_01_$2$24 a inner join dc_cust_data.DWU_AI_USER_INFO_01_$2$24 j on (j.brand_code like '1%' or j.brand_code like 'D%') and j.on_tag = '1' and a.user_id = j.user_id left join DC_CEN.SRV_DIM_CONVERT_CHANNEL_BNESS t on t.LEV_ID = j.DEVELOP_DEPART_ID left join dc_cust_data.DWU_AI_ACCT_$2$24 b on a.user_id = b.user_id left join dc_cust_data.DWD_AI_FEECY_WIDE_$2$24 c on a.user_id = c.user_id left join dc_cust_data.DWU_DIM_1_ACCT_$1$ d on a.user_id = d.user_id left join dc_cust_data.DWU_AI_USER_INFO_02_$1$ f on a.user_id = f.user_id left join dc_cust_data.DWU_AI_USER_INFO_02_$2$24 g on a.user_id = g.user_id left join dc_cust_data.DWD_AI_FEECY_WIDE_$1$24 h on a.user_id = h.user_id left join dc_cust_data.DWU_CALL_$2$24 k on a.user_id = k.user_id left join dc_cust_data.DWU_GS_$2$24 l on a.user_id = l.user_id;" \
-            .replace("$2$", mon_2[0:6]).replace("$1$", mon_1[0:6])
-        print(result)
+        # result = "select a.user_id, b.OTH_FEE2 , b.RENT_FEE2, b.INCRE_FEE2 , b.SMS_FEE2 , b.VO_FEE2, b.CUR_INCOME2, c.MON_CATEGORY_FEE001, c.MON_CATEGORY_FEE031, d.CUR_INCOME , f.PRODUCT_RENT P1, g.PRODUCT_RENT P2, h.MON_CATEGORY_FEE031 MON_CATEGORY_FEE0311 , b.OVER_PRODUCT_FEE_01, b.OVER_PRODUCT_FEE_02, b.OVER_PRODUCT_FEE , d.MEALOUT_QT_FEE , d.MEALOUT_CALL_FEE , d.MEALOUT_SMS_FEE, d.DATA_PLANOUT_INCOME, d.PROM_FEE PROM_FEE1, j.EPARCHY_CODE , g.AGE, j.JOIN_MONTH , t.LEV_2, substr(g.PSPT_ID,1,6) PSPT_CITY, k.ADD_DURATION , k.ADD_CALL_TIMES , l.ADD_STREAM into zhubr_tmp_$2$ from dc_cust_data.DWU_AI_USER_INFO_01_$2$24 a inner join dc_cust_data.DWU_AI_USER_INFO_01_$2$24 j on (j.brand_code like '1%' or j.brand_code like 'D%') and j.on_tag = '1' and a.user_id = j.user_id left join DC_CEN.SRV_DIM_CONVERT_CHANNEL_BNESS t on t.LEV_ID = j.DEVELOP_DEPART_ID left join dc_cust_data.DWU_AI_ACCT_$2$24 b on a.user_id = b.user_id left join dc_cust_data.DWD_AI_FEECY_WIDE_$2$24 c on a.user_id = c.user_id left join dc_cust_data.DWU_DIM_1_ACCT_$1$ d on a.user_id = d.user_id left join dc_cust_data.DWU_AI_USER_INFO_02_$1$ f on a.user_id = f.user_id left join dc_cust_data.DWU_AI_USER_INFO_02_$2$24 g on a.user_id = g.user_id left join dc_cust_data.DWD_AI_FEECY_WIDE_$1$24 h on a.user_id = h.user_id left join dc_cust_data.DWU_CALL_$2$24 k on a.user_id = k.user_id left join dc_cust_data.DWU_GS_$2$24 l on a.user_id = l.user_id;" \
+        result = "select a.user_id,a.CUR_INCOME2 as x1,b.CUR_INCOME2 x2,c.CUR_INCOME as Y,d.PRODUCT_RENT P1,e.PRODUCT_RENT P2,b.OVER_PRODUCT_FEE,c.MEALOUT_QT_FEE,$3$ as mon_d into zhubr_tmp_$2$ from dc_cust_data.DWU_AI_ACCT_$4$ a left join dc_cust_data.DWU_AI_ACCT_$2$24 b on a.user_id=b.user_id and a.CUR_INCOME2 > 0 left join dc_cust_data.DWU_DIM_1_ACCT_$2$ c on a.user_id=c.user_id left join dc_cust_data.DWU_AI_USER_INFO_02_$1$ d on a.user_id = d.user_id left join dc_cust_data.DWU_AI_USER_INFO_02_$2$24 e on a.user_id = e.user_id"\
+            .replace("$2$", mon_2[0:6]).replace("$1$", mon_1[0:6]).replace("$3$", mon_2[6:8]).replace("$4$",mon_2)
+        # print(result)
         i = i + 1
+
+    print("IQ数据提取阶段1——取指标数，校验部分")
+    i = 0
+    result1 = ""
+    while i < mon_len - 1:
+        mon_2 = tmp[i + 1].replace('-', '')
+        result = "(select $1$ as month,count(1) as count from zhubr_tmp_$1$ ) union " \
+            .replace("$1$", mon_2[0:6])
+        result1 = result1 + result
+        # print(result)
+        i = i + 1
+    # print(result1)
+
+    print("IQ数据提取阶段2——汇总中间表")
+    i = 0
+    result1 = ""
+    while i < mon_len - 1:
+        mon_2 = tmp[i + 1].replace('-', '')
+        # result = "(select  user_id,CUR_INCOME2,CUR_INCOME,p1,p2,OVER_PRODUCT_FEE,MEALOUT_QT_FEE, mon_d from zhubr_tmp_$1$) union " \
+        result = "(select user_id,y,x1,x2,p1,p2,OVER_PRODUCT_FEE,MEALOUT_QT_FEE, mon_d from zhubr_tmp_$1$) union " \
+                    .replace("$1$", mon_2[0:6])
+        result1 = result1 + result
+        i = i + 1
+    print(result1)
 
 
 if __name__ == '__main__':
-    # plotAcctMon()
-    getIqModelData()
+    plotAcctMon()
+    # getIqModelData()

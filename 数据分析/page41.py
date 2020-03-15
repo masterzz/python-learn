@@ -1,8 +1,7 @@
 # coding=utf-8
 from matplotlib import pyplot as plt
 from matplotlib import font_manager
-my_font = font_manager.FontProperties(fname="/System/Library/Fonts/Hiragino Sans GB.ttc")
-
+my_font = font_manager.FontProperties(fname="C:/Windows/Fonts/msyh.ttc")
 
 a = ["战狼2","速度与激情8","功夫瑜伽","西游伏妖篇","变形金刚5：最后的骑士","摔跤吧！爸爸","加勒比海盗5：死无对证","金刚：骷髅岛","极限特工：终极回归","生化危机6：终章","乘风破浪","神偷奶爸3","智取威虎山","大闹天竺","金刚狼3：殊死一战","蜘蛛侠：英雄归来","悟空传","银河护卫队2","情圣","新木乃伊",]
 
