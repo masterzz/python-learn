@@ -5,7 +5,8 @@ import jieba
 import math
 import re
 import pandas as pd
-import xlrd
+import xlrd2    #xlrd: 对Excel进行读相关操作
+import xlwt    #xlwt: 对Excel进行写相关操作，且只能创建一个全新的Excel然后进行写入和保存。
 
 class MyFile:
     # def __init__(self, color,size,direction):
@@ -98,20 +99,61 @@ class MyFile:
             result = 0.0
         print("\n余弦相似度为：%f" % result)
 
-    # def read_excel(self,file_name=""):
-        file_name = xlrd.open_workbook(file_name)  # 得到文件
-        table = file_name.sheets()[2]  # 得到sheet页
-        nrows = table.nrows  # 总行数
-        ncols = table.ncols  # 总列数
-        i = 0
-        while i < nrows:
-            cell = table.row_values(i)[1]  # 得到数字列数据
-            ctype = table.cell(i, 1).ctype  # 得到数字列数据的格式
-            username = table.row_values(i)[0]
-            if ctype == 2 and cell % 1 == 0:  # 判断是否是纯数字
-                password = int(cell)  # 是纯数字就转化位int类型
-                print('用户名：%s' % username, '密码：%s' % password)
-            i = i + 1
+    # python读入文件内容，全部放入一个字典里
+    def read_excel(self, file_name=""):
+        dictory = {}
+        # 获取表格文件
+        book = xlrd2.open_workbook(file_name)
+        # 获取表格中的所有sheet
+        names = book.sheet_names()
+        # 获取第一个sheet
+        sheet = book.sheet_by_index(0)
+        # 获取当前表格的行数
+        rows = sheet.nrows
+        # 获取当前表格的列数
+        cols = sheet.ncols
+        # 获取表头文件，即表格第一行
+        head = sheet.row_values(0)
+        for row in range(rows - 1):
+            # 如果当前字典中没有该城市则创建一个
+            if not sheet.cell_value(row + 1, 0) in dictory.keys():
+                dictory[sheet.cell_value(row + 1, 0)] = {}
+            for col in range(cols - 1):
+                dictory[sheet.cell_value(row + 1, 0)][head[col + 1]] = sheet.cell_value(row + 1, col + 1)
+        return dictory
+
+    # python中，将一个字典，写入到excel里
+    def write_excel(self, dic={}, file_name=""):
+        wb = xlwt.Workbook()
+        sheet = wb.add_sheet('write_test')
+        # 先把字典的关键字拿出来
+        # 将字典放入列表，把列表内容写入excel
+        list = []
+        # 处理表头
+        head = ['序号']
+        for x in dic.get(1).keys():
+            head.append(x)
+        list.append(head)
+        # 逐行处理，list把全部字典内容读取进来
+        for i in dic.keys():
+            # 每一行一个列表处理
+            temp = []
+            # 添加序号
+            temp.append(i)
+            # 添加每一列内容
+            item = dic.get(i)
+            for j in item.keys():
+                temp.append(item.get(j))
+            list.append(temp)
+            print(temp)
+
+        # 写入excel中
+        for i in range(len(list)):
+            for j in range(len(list[i])):
+                sheet.write(i, j, list[i][j])
+
+        wb.save(file_name)
+        return None
 
 if __name__ == "__main__":
     file = MyFile()
@@ -123,11 +165,16 @@ if __name__ == "__main__":
     # file.get_window()
 
     # 测试相似度
-    s1 = "同志坚决拥护中国共产党的领导，能不折不扣贯彻落实党中央和上级党组织各项决策部署；坚决执行公司规章制度，工号创建变更按照规范流程开展，对于离职的员工或者第三方人员及时清理。"
-    s2 = "同志坚决拥护中国共产党的领导，能不折不扣贯彻落实党中央和上级党组织各项决策部署；坚决执行公司规章制度，工号创建变更按照规范流程开展，对于离职的员工或者第三方人员及时清理。"
-    file.calculate(s1, s2)
+    # s1 = "同志坚决拥护中国共产党的领导，能不折不扣贯彻落实党中央和上级党组织各项决策部署；坚决执行公司规章制度，工号创建变更按照规范流程开展，对于离职的员工或者第三方人员及时清理。"
+    # s2 = "同志坚决拥护中国共产党的领导，能不折不扣贯彻落实党中央和上级党组织各项决策部署；坚决执行公司规章制度，工号创建变更按照规范流程开展，对于离职的员工或者第三方人员及时清理。"
+    # file.calculate(s1, s2)
 
     # 测试读取excel
     # file.read_excel("D:\work\党建\\202210\工号管理员\系统管理员清单20221123.xlsx")
+    dictory = file.read_excel("F:\learn\\aa.xls")
+    # print(dictory.get(2).get('动作'))
+
+    # 测试写入excel
+    file.write_excel(dic=dictory, file_name="F:\learn\\test.xls")
 
 
