@@ -97,7 +97,8 @@ class MyFile:
             result = round(float(sum) / (math.sqrt(sq1) * math.sqrt(sq2)), 3)
         except ZeroDivisionError:
             result = 0.0
-        print("\n余弦相似度为：%f" % result)
+        # print("\n余弦相似度为：%f" % result)
+        return result
 
     # python读入文件内容，全部放入一个字典里
     def read_excel(self, file_name=""):
@@ -145,7 +146,20 @@ class MyFile:
             for j in item.keys():
                 temp.append(item.get(j))
             list.append(temp)
-            print(temp)
+            # print(temp)
+
+        # 写入excel中
+        for i in range(len(list)):
+            for j in range(len(list[i])):
+                sheet.write(i, j, list[i][j])
+        wb.save(file_name)
+        return None
+
+    # python中，将列表，写入到excel里
+    def write_excel(self, list=[], file_name="",sheet_name=""):
+        wb = xlwt.Workbook()
+
+        sheet = wb.add_sheet(sheet_name)
 
         # 写入excel中
         for i in range(len(list)):
@@ -162,7 +176,7 @@ if __name__ == "__main__":
     # file.getWindow()
     # file.write_file("aa.txt")
     # file.read_file("D:\learn\python")
-    # file.get_window()
+    file.get_window()
 
     # 测试相似度
     # s1 = "同志坚决拥护中国共产党的领导，能不折不扣贯彻落实党中央和上级党组织各项决策部署；坚决执行公司规章制度，工号创建变更按照规范流程开展，对于离职的员工或者第三方人员及时清理。"
@@ -171,10 +185,10 @@ if __name__ == "__main__":
 
     # 测试读取excel
     # file.read_excel("D:\work\党建\\202210\工号管理员\系统管理员清单20221123.xlsx")
-    dictory = file.read_excel("F:\learn\\aa.xls")
+    # dictory = file.read_excel("F:\learn\\aa.xls")
     # print(dictory.get(2).get('动作'))
 
     # 测试写入excel
-    file.write_excel(dic=dictory, file_name="F:\learn\\test.xls")
+    # file.write_excel(dic=dictory, file_name="F:\learn\\test.xls")
 
 
