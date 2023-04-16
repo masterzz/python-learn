@@ -88,7 +88,7 @@ def calculate():
     dic1 = {}
     # 3、整理进dic1进行输出
 
-    mf.write_excel(dic,"D:\work\党建\\202210\工号管理员\\tt.xls" )
+    # mf.write_excel(dic,"D:\work\党建\\202210\工号管理员\\tt.xls" )
     return None
 
 if __name__ == "__main__":
