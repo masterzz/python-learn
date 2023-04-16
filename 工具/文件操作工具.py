@@ -1,11 +1,11 @@
 import os
 import tkinter
 import tkinter.simpledialog
-import jieba
+# import jieba
 import math
 import re
 import pandas as pd
-import xlrd2    #xlrd: 对Excel进行读相关操作
+# import xlrd2    #xlrd: 对Excel进行读相关操作
 import xlwt    #xlwt: 对Excel进行写相关操作，且只能创建一个全新的Excel然后进行写入和保存。
 
 class MyFile:
