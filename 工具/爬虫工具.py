@@ -18,16 +18,18 @@ class MyCrawler:
         # 根据href属性值,下载到指定路径
         for link in links:
             download_link = link.get("href")
-            urllib.request.urlretrieve(download_link, save_path)
+            # 获取文件名
+            file_name = link.get_text()
+            full_name = save_path + "\\" + file_name
+            urllib.request.urlretrieve(download_link, full_name)
 
 if __name__ == '__main__':
     mycla = MyCrawler()
     html = 'http://www.zhaoqing.gov.cn/xxgk/tjxx/tjnj/content/post_2796158.html'
     attr  = "download"
     save_path = "D:\\work\\政企BG\\肇庆-交流\\202310\\预算统计\\统计年鉴"
-    # mycla.download_by_att(html = html, attr = attr, save_path = save_path)
-    
-    tfp = open(save_path, 'wb')
+    mycla.download_by_att(html = html, attr = attr, save_path = save_path)
+
     # page = requests.get(html)
     # html_content = page.text
     # print(html_content)
