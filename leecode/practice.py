@@ -1,10 +1,16 @@
 # 1、合并两个有序数组
-from typing import List
+from typing import List, Optional
+
+
+class ListNode:
+    pass
+
 
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         """
-        Do not return anything, modify nums1 in-place instead.
+        Do not return anything, modify nums1
+        in-place instead.
         1、全部元素先加进来
         2、单个非递减顺序排列，用冒泡
         3、两个非递减排序
@@ -20,6 +26,9 @@ class Solution:
             for j in range(l):
                 pass
         print(temp)
+
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        pass
 
 if __name__ == '__main__':
     n1 = [1,2,3,0,0,0]
